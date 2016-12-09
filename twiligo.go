@@ -35,8 +35,17 @@ func NewClient(baseURL, sid, serviceSID, token string) *Client {
 	}
 }
 
-func (c *Client) post(path string, payload []byte, headers map[string]string) ([]byte, error) {
+func (c *Client) postService(path string, payload []byte, headers map[string]string) ([]byte, error) {
+	url := fmt.Sprintf("%s/Services/%s", c.baseURL, path)
+	return c.post(url, payload, headers)
+}
+
+func (c *Client) postResource(path string, payload []byte, headers map[string]string) ([]byte, error) {
 	url := fmt.Sprintf("%s/Services/%s/%s", c.baseURL, c.serviceSID, path)
+	return c.post(url, payload, headers)
+}
+
+func (c *Client) post(url string, payload []byte, headers map[string]string) ([]byte, error) {
 	log.Println("Posting to URL: %s", url)
 	log.Println("POST body:\n%s", string(payload))
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payload))
@@ -71,8 +80,17 @@ func (c *Client) post(path string, payload []byte, headers map[string]string) ([
 	return data, nil
 }
 
-func (c *Client) get(path string, headers map[string]string) ([]byte, error) {
+func (c *Client) getService(path string, headers map[string]string) ([]byte, error) {
+	url := fmt.Sprintf("%s/Services/%s", c.baseURL, path)
+	return c.get(url, headers)
+}
+
+func (c *Client) getResource(path string, headers map[string]string) ([]byte, error) {
 	url := fmt.Sprintf("%s/Services/%s/%s", c.baseURL, c.serviceSID, path)
+	return c.get(url, headers)
+}
+
+func (c *Client) get(url string, headers map[string]string) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
@@ -101,8 +119,17 @@ func (c *Client) get(path string, headers map[string]string) ([]byte, error) {
 	return data, nil
 }
 
-func (c *Client) delete(path string) ([]byte, error) {
+func (c *Client) deleteResource(path string) ([]byte, error) {
 	url := fmt.Sprintf("%s/Services/%s/%s", c.baseURL, c.serviceSID, path)
+	return c.delete(url)
+}
+
+func (c *Client) deleteService(path string) ([]byte, error) {
+	url := fmt.Sprintf("%s/Services/%s", c.baseURL, path)
+	return c.delete(url)
+}
+
+func (c *Client) delete(url string) ([]byte, error) {
 	req, err := http.NewRequest("DELETE", url, nil)
 
 	if err != nil {
