@@ -108,4 +108,27 @@ func main() {
 			log.Printf("Failed to delete channel %s: %s", ch.SID, err)
 		}
 	}
+
+	// BEGINNING USER EXAMPLE
+	// Create a User
+	user1, err := client.CreateUser(twiligo.NewUser("test@redventures.com", "Tester", "", ""))
+	if err != nil {
+		log.Printf("Failed to create user: %s", err)
+	}
+
+	// Update a User
+	user1.FriendlyName = "SUPER Tester"
+	_, err = client.UpdateUser(user1)
+	if err != nil {
+		log.Printf("Failed to update user: %s", err)
+	}
+
+	user1, err = client.User("test@redventures.com")
+	if err != nil {
+		log.Printf("Failed to get user: %s", err)
+	}
+
+	if err = client.DeleteUser(user1.SID); err != nil {
+		log.Printf("Failed to delete user %s: %s", user1.SID, err)
+	}
 }
