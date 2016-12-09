@@ -150,6 +150,18 @@ func main() {
 		log.Printf("Failed to get services: %s", err)
 	}
 
+	service, err := client.Service(services[0].SID)
+	if err != nil {
+		log.Printf("Failed to get service: %s", err)
+	}
+
+	// Update service
+	service.FriendlyName = "Not a test"
+	_, err = client.UpdateService(service)
+	if err != nil {
+		log.Printf("Failed to update service: %s", err)
+	}
+
 	// Delete Services
 	for _, s := range services {
 		if s.FriendlyName != "twilio-dev" {
