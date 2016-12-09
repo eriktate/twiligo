@@ -85,7 +85,7 @@ func (c *Client) SendMessage(channelSID string, message Message) (Message, error
 		return sentMessage, err
 	}
 
-	if err := json.Unmarshal(data, sentMessage); err != nil {
+	if err := json.Unmarshal(data, &sentMessage); err != nil {
 		return sentMessage, err
 	}
 
@@ -107,7 +107,7 @@ func (c *Client) UpdateMessage(channelSID string, message Message) (Message, err
 		return updatedMessage, err
 	}
 
-	if err := json.Unmarshal(data, updatedMessage); err != nil {
+	if err := json.Unmarshal(data, &updatedMessage); err != nil {
 		return updatedMessage, err
 	}
 
