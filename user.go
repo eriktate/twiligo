@@ -43,7 +43,7 @@ func (c *Client) CreateUser(user User) (User, error) {
 	form.Add("RoleSid", user.RoleSID)
 	payload := []byte(form.Encode())
 
-	data, err := c.post("Users", payload, getFormHeader())
+	data, err := c.postResource("Users", payload, getFormHeader())
 
 	if err != nil {
 		return createdUser, err
@@ -60,7 +60,7 @@ func (c *Client) CreateUser(user User) (User, error) {
 func (c *Client) User(identity string) (User, error) {
 	var user User
 
-	data, err := c.get(fmt.Sprintf("Users/%s", identity), nil)
+	data, err := c.getResource(fmt.Sprintf("Users/%s", identity), nil)
 
 	if err != nil {
 		return user, err
@@ -83,7 +83,7 @@ func (c *Client) UpdateUser(user User) (User, error) {
 	form.Add("RoleSid", user.RoleSID)
 	payload := []byte(form.Encode())
 
-	data, err := c.post(fmt.Sprintf("Users/%s", user.SID), payload, getFormHeader())
+	data, err := c.postResource(fmt.Sprintf("Users/%s", user.SID), payload, getFormHeader())
 
 	if err != nil {
 		return user, err
@@ -98,7 +98,7 @@ func (c *Client) UpdateUser(user User) (User, error) {
 
 // DeleteUser deletes an existing User from Twilio.
 func (c *Client) DeleteUser(sid string) error {
-	data, err := c.delete(fmt.Sprintf("Users/%s", sid))
+	data, err := c.deleteResource(fmt.Sprintf("Users/%s", sid))
 
 	if err != nil {
 		return err

@@ -131,4 +131,31 @@ func main() {
 	if err = client.DeleteUser(user1.SID); err != nil {
 		log.Printf("Failed to delete user %s: %s", user1.SID, err)
 	}
+
+	// BEGINNING SERVICE EXAMPLE
+	log.Println("DOING SERVICE THINGS")
+	// Create a Service
+	_, err = client.CreateService(twiligo.NewService("Test Service"))
+	if err != nil {
+		log.Printf("Failed to create service: %s", err)
+	}
+	_, err = client.CreateService(twiligo.NewService("Also a test"))
+	if err != nil {
+		log.Printf("Failed to create service: %s", err)
+	}
+
+	// Get Services
+	services, err := client.Services()
+	if err != nil {
+		log.Printf("Failed to get services: %s", err)
+	}
+
+	// Delete Services
+	for _, s := range services {
+		if s.FriendlyName != "twilio-dev" {
+			if err = client.DeleteService(s.SID); err != nil {
+				log.Printf("Failed to delete service %s: %s", s.SID, err)
+			}
+		}
+	}
 }

@@ -38,7 +38,7 @@ type Link struct {
 // or the Unique Name assigned to the channel.
 func (c *Client) Channel(id string) (Channel, error) {
 	var channel Channel
-	data, err := c.get(fmt.Sprintf("Channels/%s", id), nil)
+	data, err := c.getResource(fmt.Sprintf("Channels/%s", id), nil)
 
 	if err != nil {
 		return channel, err
@@ -53,7 +53,7 @@ func (c *Client) Channel(id string) (Channel, error) {
 
 // Channels returns all channels currently tied to the given
 func (c *Client) Channels() ([]Channel, error) {
-	data, err := c.get("Channels", nil)
+	data, err := c.getResource("Channels", nil)
 
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func (c *Client) CreateChannel(channel Channel) (Channel, error) {
 	form.Add("Type", channel.Type)
 
 	payload := []byte(form.Encode())
-	data, err := c.post("Channels", payload, getFormHeader())
+	data, err := c.postResource("Channels", payload, getFormHeader())
 
 	if err != nil {
 		return newChannel, err
@@ -102,7 +102,7 @@ func (c *Client) UpdateChannel(channel Channel) (Channel, error) {
 	form.Add("Attributes", channel.Attributes)
 
 	payload := []byte(form.Encode())
-	data, err := c.post(fmt.Sprintf("Channels/%s", channel.SID), payload, getFormHeader())
+	data, err := c.postResource(fmt.Sprintf("Channels/%s", channel.SID), payload, getFormHeader())
 
 	if err != nil {
 		return updatedChannel, err
@@ -117,7 +117,7 @@ func (c *Client) UpdateChannel(channel Channel) (Channel, error) {
 
 // DeleteChannel deletes a Channel from Twilio.
 func (c *Client) DeleteChannel(sid string) error {
-	data, err := c.delete(fmt.Sprintf("Channels/%s", sid))
+	data, err := c.deleteResource(fmt.Sprintf("Channels/%s", sid))
 
 	if err != nil {
 		return err

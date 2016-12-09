@@ -41,7 +41,7 @@ func NewMessage(body, attributes, from string) Message {
 // Message retrieves an individual message from a Channel in Twilio.
 func (c *Client) Message(channelSID, messageSID string) (Message, error) {
 	var message Message
-	data, err := c.get(fmt.Sprintf("Channels/%s/Messages/%s", channelSID, messageSID), nil)
+	data, err := c.getResource(fmt.Sprintf("Channels/%s/Messages/%s", channelSID, messageSID), nil)
 
 	if err != nil {
 		return message, err
@@ -57,7 +57,7 @@ func (c *Client) Message(channelSID, messageSID string) (Message, error) {
 // Messages retrieves ALL Messages from a Channel in Twilio.
 func (c *Client) Messages(channelSID string) ([]Message, error) {
 	var messageRes MessagesResponse
-	data, err := c.get(fmt.Sprintf("Channels/%s/Messages", channelSID), nil)
+	data, err := c.getResource(fmt.Sprintf("Channels/%s/Messages", channelSID), nil)
 
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (c *Client) SendMessage(channelSID string, message Message) (Message, error
 	form.Add("Attributes", message.Attributes)
 	form.Add("From", message.From)
 	payload := []byte(form.Encode())
-	data, err := c.post(fmt.Sprintf("Channels/%s/Messages", channelSID), payload, getFormHeader())
+	data, err := c.postResource(fmt.Sprintf("Channels/%s/Messages", channelSID), payload, getFormHeader())
 
 	if err != nil {
 		return sentMessage, err
@@ -101,7 +101,7 @@ func (c *Client) UpdateMessage(channelSID string, message Message) (Message, err
 	form.Add("Attributes", message.Attributes)
 	payload := []byte(form.Encode())
 
-	data, err := c.post(fmt.Sprintf("Channels/%s/Messages/%s", channelSID, message.SID), payload, getFormHeader())
+	data, err := c.postResource(fmt.Sprintf("Channels/%s/Messages/%s", channelSID, message.SID), payload, getFormHeader())
 
 	if err != nil {
 		return updatedMessage, err
@@ -116,7 +116,7 @@ func (c *Client) UpdateMessage(channelSID string, message Message) (Message, err
 
 // DeleteMessage deletes a specific Message within a Channel in Twilio.
 func (c *Client) DeleteMessage(channelSID, messageSID string) error {
-	data, err := c.delete(fmt.Sprintf("Channels/%s/Messages/%s", channelSID, messageSID))
+	data, err := c.deleteResource(fmt.Sprintf("Channels/%s/Messages/%s", channelSID, messageSID))
 
 	if err != nil {
 		return err
