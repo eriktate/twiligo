@@ -81,9 +81,7 @@ func (c *Client) CreateChannel(channel Channel) (Channel, error) {
 	form.Add("Type", channel.Type)
 
 	payload := []byte(form.Encode())
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	data, err := c.post("Channels", payload, headers)
+	data, err := c.post("Channels", payload, getFormHeader())
 
 	if err != nil {
 		return newChannel, err
@@ -104,9 +102,7 @@ func (c *Client) UpdateChannel(channel Channel) (Channel, error) {
 	form.Add("Attributes", channel.Attributes)
 
 	payload := []byte(form.Encode())
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	data, err := c.post(fmt.Sprintf("Channels/%s", channel.SID), payload, headers)
+	data, err := c.post(fmt.Sprintf("Channels/%s", channel.SID), payload, getFormHeader())
 
 	if err != nil {
 		return updatedChannel, err

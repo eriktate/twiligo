@@ -125,3 +125,10 @@ func (c *Client) delete(path string) ([]byte, error) {
 	log.Printf("Returned DELETE data:\n%s", string(data))
 	return data, nil
 }
+
+func getFormHeader() map[string]string {
+	headers := make(map[string]string)
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
+
+	return headers
+}
